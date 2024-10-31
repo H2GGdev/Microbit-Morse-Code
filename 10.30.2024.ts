@@ -1,4 +1,3 @@
-// Translate the accumulated Morse code into letters
 function translateMorse(morseArray: string[]): string {
     let translatedMessage = ""; // Reset translatedMessage at the start
     let currentLetter = ""; // Reset currentLetter at the start
@@ -7,7 +6,7 @@ function translateMorse(morseArray: string[]): string {
         if (symbol === "EOL") {
             // Translate accumulated Morse to letter and add to translatedMessage
             translatedMessage += ref[currentLetter] || "?";
-            console.log(`Translated ${currentLetter} to ${ref[currentLetter] || "?"}`);
+            console.log(Translated ${ currentLetter } to ${ ref[currentLetter] || "?" });
             currentLetter = ""; // Reset currentLetter after adding to translatedMessage
         } else {
             currentLetter += symbol; // Accumulate current Morse code for letter
@@ -17,10 +16,10 @@ function translateMorse(morseArray: string[]): string {
     // Append the last letter if it exists
     if (currentLetter) {
         translatedMessage += ref[currentLetter] || "?"; // Translate last letter
-        console.log(`Translated ${currentLetter} to ${ref[currentLetter] || "?"}`);
+        console.log(Translated ${ currentLetter } to ${ ref[currentLetter] || "?" });
     }
 
-    console.log(`Full translated message: ${translatedMessage}`);
+    console.log(Full translated message: ${ translatedMessage });
     return translatedMessage; // Return the translated message
 }
 
@@ -106,7 +105,7 @@ basic.forever(function () {
             fullMessage += "EOW"; // Add to fullMessage
             untranslatedMessage += " "; // Add space to untranslatedMessage
         }
-        
+
         basic.pause(100);
     } else if (!(pins.digitalReadPin(DigitalPin.P0) == 1 || input.buttonIsPressed(Button.A))) {
         isButtonAActive = false;
@@ -128,50 +127,50 @@ basic.forever(function () {
             if (isButtonBHeld) {
                 // Translate the full message and log it
                 morseCodeT.forEach((segment, index) => {
-                    console.log(`Segment ${index + 1}: ${segment}`);
-                });
+                    console.log(Segment ${ index + 1}: ${ segment });
+            });
                 /*let fullTranslatedMessage = morseCodeT
                 console.log("Full Message: " + fullTranslatedMessage); // Print the entire accumulated message
                 console.log("Untranslated Message: " + untranslatedMessage); // Print untranslated Morse code*/
             } else {
-                morseCodeT.push(translateMorse(morseCode))
-                let translatedMessage = translateMorse(morseCode); // Translate the Morse code if not held
-                console.log("Current Message: " + translatedMessage); // Log the translated message
-                console.log("Untranslated Message: " + untranslatedMessage); // Log untranslated Morse code
-                untranslatedMessage += "EOL"; // Add dot between characters for untranslatedMessage
-            }
+    morseCodeT.push(translateMorse(morseCode))
+    let translatedMessage = translateMorse(morseCode); // Translate the Morse code if not held
+    untranslatedMessage += "EOL"; // Add dot between characters for untranslatedMessage
+    console.log("Current Message: " + translatedMessage); // Log the translated message
+    console.log("Untranslated Message: " + untranslatedMessage); // Log untranslated Morse code
+}
 
-            // Play the Morse code
-            morseCode.forEach(symbol => {
-                if (symbol === ".") {
-                    music.playTone(550, music.beat(BeatFraction.Quarter)); // Short beep for dot
-                    pins.digitalWritePin(DigitalPin.P1, 1);
-                    basic.pause(500);
-                    pins.digitalWritePin(DigitalPin.P1, 0);
-                } else if (symbol === "-") {
-                    music.playTone(550, music.beat(BeatFraction.Half)); // Longer beep for dash
-                    pins.digitalWritePin(DigitalPin.P1, 1);
-                    basic.pause(1000);
-                    pins.digitalWritePin(DigitalPin.P1, 0);
-                } else if (symbol === "EOL") {
-                    basic.pause(1000);  // Pause for space between letters
-                }
-                basic.pause(500);  // Pause between signals
-            });
+// Play the Morse code
+morseCode.forEach(symbol => {
+    if (symbol === ".") {
+        music.playTone(550, music.beat(BeatFraction.Quarter)); // Short beep for dot
+        pins.digitalWritePin(DigitalPin.P1, 1);
+        basic.pause(500);
+        pins.digitalWritePin(DigitalPin.P1, 0);
+    } else if (symbol === "-") {
+        music.playTone(550, music.beat(BeatFraction.Half)); // Longer beep for dash
+        pins.digitalWritePin(DigitalPin.P1, 1);
+        basic.pause(1000);
+        pins.digitalWritePin(DigitalPin.P1, 0);
+    } else if (symbol === "EOL") {
+        basic.pause(1000);  // Pause for space between letters
+    }
+    basic.pause(500);  // Pause between signals
+});
 
-            // Reset morseCode after playing the message, but keep the fullMessage for the next press
-            morseCode = []; // Clear morseCode
-            isButtonBActive = false;
-            isButtonBHeld = false; // Reset held state for the next press
+// Reset morseCode after playing the message, but keep the fullMessage for the next press
+morseCode = []; // Clear morseCode
+isButtonBActive = false;
+isButtonBHeld = false; // Reset held state for the next press
         }
     }
 
-    // Check if Pin 2 is pressed along with Button B
-    if (pins.digitalReadPin(DigitalPin.P2) == 1 && isButtonBActive) {
-        const fullMessageOnBPlusPin2 = fullMessage; // Use the fullMessage for Pin 2
-        console.log("Full Message on B + Pin 2: " + fullMessageOnBPlusPin2); // Log message on Pin 2
+// Check if Pin 2 is pressed along with Button B
+if (pins.digitalReadPin(DigitalPin.P2) == 1 && isButtonBActive) {
+    const fullMessageOnBPlusPin2 = fullMessage; // Use the fullMessage for Pin 2
+    console.log("Full Message on B + Pin 2: " + fullMessageOnBPlusPin2); // Log message on Pin 2
 
-        // Reset morseCode after translation
-        morseCode = []; // Clear morseCode
-    }
+    // Reset morseCode after translation
+    morseCode = []; // Clear morseCode
+}
 });
