@@ -113,6 +113,34 @@ basic.forever(function () {
     } else {
         if (isButtonBActive) {
             if (isButtonBHeld) {
+                const result: string[] = untranslatedMessage
+                    .split('')
+                    .reduce((acc: string[], curr: string) => {
+                        if (curr === 'E' && acc[acc.length - 1] === 'O') {
+                            acc[acc.length - 1] = 'EOL';
+                        } else {
+                            acc.push(curr);
+                        }
+                        return acc;
+                    }, []);
+                console.log("t array: "+result)
+                result.forEach((symbol: string) => {
+                    console.log("translating symbol: " + symbol)
+                    if (symbol === ".") {
+                        music.playTone(550, music.beat(BeatFraction.Quarter));
+                        pins.digitalWritePin(DigitalPin.P1, 1);
+                        basic.pause(500);
+                        pins.digitalWritePin(DigitalPin.P1, 0);
+                    } else if (symbol === "-") {
+                        music.playTone(550, music.beat(BeatFraction.Half));
+                        pins.digitalWritePin(DigitalPin.P1, 1);
+                        basic.pause(1000);
+                        pins.digitalWritePin(DigitalPin.P1, 0);
+                    } else if (symbol === "EOL") {
+                        basic.pause(1000);
+                    }
+                    basic.pause(500);
+                });
                 morseCodeT.forEach((segment, index) => {
                     console.log(`Segment ${index + 1}: ${segment}`);
                 });
@@ -123,7 +151,8 @@ basic.forever(function () {
                 console.log("Current Message: " + translatedMessage);
                 console.log("Untranslated Message: " + untranslatedMessage);
             }
-
+            console.log("final translation")
+            console.log(untranslatedMessage)
             morseCode.forEach(symbol => {
                 if (symbol === ".") {
                     music.playTone(550, music.beat(BeatFraction.Quarter));
